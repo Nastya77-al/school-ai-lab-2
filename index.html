@@ -547,92 +547,119 @@ def my_sort(arr):
         
         <!-- Тести -->
         <section id="tests" class="section">
-            <h2>Тести для самоперевірки</h2>
-            
-            <!-- Інтерактивний тест -->
-            <div class="quiz-container">
-                <h3>Тест 1: Основи алгоритмів</h3>
-                <div id="quiz-questions">
-                    <!-- Питання будуть динамічно завантажуватися -->
-                </div>
-                <button onclick="startQuiz()">Почати тест</button>
-                <div id="quiz-navigation" style="display: none; margin-top: 1rem;">
-                    <button onclick="previousQuestion()">← Попереднє</button>
-                    <span id="question-counter">1/5</span>
-                    <button onclick="nextQuestion()">Наступне →</button>
-                    <button onclick="finishQuiz()" style="margin-left: 2rem;">Завершити тест</button>
-                </div>
+          <h2>Тести для самоперевірки</h2>
+        
+          <!-- Інтерактивний тест -->
+          <div class="quiz-container">
+            <h3>Тест 1: Основи алгоритмів</h3>
+            <div id="quiz-questions">
+              <div class="question-block">
+                <p>1. Який алгоритм має найгіршу складність O(n²)?</p>
+                <label><input type="radio" name="q1" value="a"> Merge Sort</label><br>
+                <label><input type="radio" name="q1" value="b"> Bubble Sort</label><br>
+                <label><input type="radio" name="q1" value="c"> Quick Sort</label>
+              </div>
+              <div class="question-block">
+                <p>2. Який алгоритм є стабільним?</p>
+                <label><input type="radio" name="q2" value="a"> Selection Sort</label><br>
+                <label><input type="radio" name="q2" value="b"> Merge Sort</label><br>
+                <label><input type="radio" name="q2" value="c"> Heap Sort</label>
+              </div>
+              <div class="question-block">
+                <p>3. Скільки підмасивів створює merge sort на першому кроці для 8 елементів?</p>
+                <label><input type="radio" name="q3" value="a"> 2</label><br>
+                <label><input type="radio" name="q3" value="b"> 4</label><br>
+                <label><input type="radio" name="q3" value="c"> 8</label>
+              </div>
+              <div class="question-block">
+                <p>4. Який алгоритм краще підходить для майже відсортованих масивів?</p>
+                <label><input type="radio" name="q4" value="a"> Insertion Sort</label><br>
+                <label><input type="radio" name="q4" value="b"> Bubble Sort</label><br>
+                <label><input type="radio" name="q4" value="c"> Merge Sort</label>
+              </div>
+              <div class="question-block">
+                <p>5. Який з алгоритмів не базується на порівнянні?</p>
+                <label><input type="radio" name="q5" value="a"> Radix Sort</label><br>
+                <label><input type="radio" name="q5" value="b"> Selection Sort</label><br>
+                <label><input type="radio" name="q5" value="c"> Quick Sort</label>
+              </div>
             </div>
-            
-            <!-- Інтерактивні вправи -->
-            <div class="algorithm-box" style="margin-top: 2rem;">
-                <h3>Вправа: Визначте алгоритм</h3>
-                <p>Подивіться на анімацію та визначте, який алгоритм використовується:</p>
-                <div id="mystery-sort" style="background: #2c3e50; padding: 1rem; margin: 1rem 0;">
-                    <div id="mystery-array" style="text-align: center;">
-                        <!-- Анімація -->
-                    </div>
-                </div>
-                <div>
-                    <label><input type="radio" name="mystery" value="bubble"> Bubble Sort</label>
-                    <label><input type="radio" name="mystery" value="selection"> Selection Sort</label>
-                    <label><input type="radio" name="mystery" value="insertion"> Insertion Sort</label>
-                </div>
-                <button onclick="startMysterySort()">Показати анімацію</button>
-                <button onclick="checkMysteryAnswer()">Перевірити</button>
-                <div id="mystery-result"></div>
+            <button onclick="gradeQuiz()">Перевірити відповіді</button>
+            <div id="quiz-result" style="margin-top: 1rem;"></div>
+          </div>
+        
+          <!-- Інтерактивні вправи -->
+          <div class="algorithm-box" style="margin-top: 2rem;">
+            <h3>Вправа: Визначте алгоритм</h3>
+            <p>Подивіться на анімацію та визначте, який алгоритм використовується:</p>
+            <div id="mystery-sort" style="background: #2c3e50; padding: 1rem; margin: 1rem 0;">
+              <div id="mystery-array" style="text-align: center; display: flex; justify-content: center; gap: 4px;"></div>
             </div>
-            
-            <!-- Drag & Drop вправа -->
-            <div class="algorithm-box">
-                <h3>Вправа: Розставте кроки алгоритму</h3>
-                <p>Перетягніть кроки у правильному порядку для bubble sort:</p>
-                <div id="steps-container" style="display: flex; gap: 2rem; margin: 1rem 0;">
-                    <div style="flex: 1;">
-                        <h4>Кроки (перетягніть →)</h4>
-                        <div id="available-steps" style="min-height: 200px; background: #f4f4f4; padding: 1rem;">
-                            <div class="draggable-step" draggable="true" data-step="1">Порівняти сусідні елементи</div>
-                            <div class="draggable-step" draggable="true" data-step="2">Якщо перший більший - поміняти місцями</div>
-                            <div class="draggable-step" draggable="true" data-step="3">Повторити для всього масиву</div>
-                            <div class="draggable-step" draggable="true" data-step="4">Повторити n-1 разів</div>
-                        </div>
-                    </div>
-                    <div style="flex: 1;">
-                        <h4>Правильний порядок</h4>
-                        <div id="ordered-steps" style="min-height: 200px; background: #ecf0f1; padding: 1rem;">
-                            <!-- Сюди перетягуються кроки -->
-                        </div>
-                    </div>
-                </div>
-                <button onclick="checkStepsOrder()">Перевірити порядок</button>
-                <div id="steps-result"></div>
+            <div>
+              <label><input type="radio" name="mystery" value="bubble"> Bubble Sort</label>
+              <label><input type="radio" name="mystery" value="selection"> Selection Sort</label>
+              <label><input type="radio" name="mystery" value="insertion"> Insertion Sort</label>
             </div>
-            
-            <!-- Швидкий тест -->
-            <div class="algorithm-box">
-                <h3>Швидкий тест: True/False</h3>
-                <div id="true-false-container">
-                    <div class="question" style="margin: 1rem 0;">
-                        <p>1. Bubble sort завжди виконує O(n²) операцій</p>
-                        <button onclick="answerTrueFalse(1, true)">True</button>
-                        <button onclick="answerTrueFalse(1, false)">False</button>
-                        <span id="tf-result-1"></span>
-                    </div>
-                    <div class="question" style="margin: 1rem 0;">
-                        <p>2. Merge sort використовує принцип "розділяй і володарюй"</p>
-                        <button onclick="answerTrueFalse(2, true)">True</button>
-                        <button onclick="answerTrueFalse(2, false)">False</button>
-                        <span id="tf-result-2"></span>
-                    </div>
-                    <div class="question" style="margin: 1rem 0;">
-                        <p>3. Selection sort є стабільним алгоритмом</p>
-                        <button onclick="answerTrueFalse(3, true)">True</button>
-                        <button onclick="answerTrueFalse(3, false)">False</button>
-                        <span id="tf-result-3"></span>
-                    </div>
-                </div>
-                <div id="tf-score" style="margin-top: 1rem;"></div>
+            <button onclick="startMysterySort()">Показати анімацію</button>
+            <button onclick="checkMysteryAnswer()">Перевірити</button>
+            <div id="mystery-result"></div>
+          </div>
+        
+          <!-- Drag & Drop вправа -->
+          <div class="algorithm-box">
+            <h3>Вправа: Розставте кроки алгоритму</h3>
+            <p>Перетягніть кроки у правильному порядку для bubble sort:</p>
+            <div id="steps-container" style="display: flex; gap: 2rem; margin: 1rem 0;">
+              <div style="flex: 1;">
+                <h4>Кроки (перетягніть →)</h4>
+                <div id="available-steps" class="dropzone" style="min-height: 200px; background: #f4f4f4; padding: 1rem;"></div>
+              </div>
+              <div style="flex: 1;">
+                <h4>Правильний порядок</h4>
+                <div id="ordered-steps" class="dropzone" style="min-height: 200px; background: #ecf0f1; padding: 1rem;"></div>
+              </div>
             </div>
+            <button onclick="checkStepsOrder()">Перевірити порядок</button>
+            <div id="steps-result"></div>
+          </div>
+        
+          <!-- Швидкий тест -->
+          <div class="algorithm-box">
+            <h3>Швидкий тест: True/False</h3>
+            <div id="true-false-container">
+              <div class="question" style="margin: 1rem 0;">
+                <p>1. Bubble sort завжди виконує O(n²) операцій</p>
+                <button onclick="answerTrueFalse(1, true)">True</button>
+                <button onclick="answerTrueFalse(1, false)">False</button>
+                <span id="tf-result-1"></span>
+              </div>
+              <div class="question" style="margin: 1rem 0;">
+                <p>2. Merge sort використовує принцип "розділяй і володарюй"</p>
+                <button onclick="answerTrueFalse(2, true)">True</button>
+                <button onclick="answerTrueFalse(2, false)">False</button>
+                <span id="tf-result-2"></span>
+              </div>
+              <div class="question" style="margin: 1rem 0;">
+                <p>3. Selection sort є стабільним алгоритмом</p>
+                <button onclick="answerTrueFalse(3, true)">True</button>
+                <button onclick="answerTrueFalse(3, false)">False</button>
+                <span id="tf-result-3"></span>
+              </div>
+              <div class="question" style="margin: 1rem 0;">
+                <p>4. Quick sort завжди стабільний</p>
+                <button onclick="answerTrueFalse(4, true)">True</button>
+                <button onclick="answerTrueFalse(4, false)">False</button>
+                <span id="tf-result-4"></span>
+              </div>
+              <div class="question" style="margin: 1rem 0;">
+                <p>5. Merge sort гарантує O(n log n) у найгіршому випадку</p>
+                <button onclick="answerTrueFalse(5, true)">True</button>
+                <button onclick="answerTrueFalse(5, false)">False</button>
+                <span id="tf-result-5"></span>
+              </div>
+            </div>
+            <div id="tf-score" style="margin-top: 1rem;"></div>
+          </div>
         </section>
         
         <!-- Ресурси -->
