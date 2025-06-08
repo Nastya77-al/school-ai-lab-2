@@ -1,0 +1,16 @@
+# GitHub Pages Configuration
+theme: jekyll-theme-cayman
+title: Алгоритми сортування
+description: Інтерактивний навчальний курс для учнів 10 класу
+show_downloads: true
+google_analytics: # Add your Google Analytics tracking ID if needed
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# Exclude files from build
+exclude:
+  - README.md
+  - LICENSE
+  - .gitignore
