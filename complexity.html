@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аналіз складності алгоритмів</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        h3 {
+            color: #7f8c8d;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .concept-box {
+            background: #ecf0f1;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .example {
+            background: #e8f8f5;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .complexity-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            overflow-x: auto;
+            display: block;
+        }
+        
+        .complexity-table th,
+        .complexity-table td {
+            border: 1px solid #bdc3c7;
+            padding: 10px;
+            text-align: left;
+            min-width: 100px;
+        }
+        
+        .complexity-table th {
+            background: #34495e;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        
+        .complexity-table tr:nth-child(even) {
+            background: #ecf0f1;
+        }
+        
+        .complexity-table tr:hover {
+            background: #d5dbdb;
+        }
+        
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: #ecf0f1;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        
+        .big-o-list {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .big-o-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .graph-container {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .graph {
+            font-family: monospace;
+            white-space: pre;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            display: inline-block;
+            text-align: left;
+        }
+        
+        .recommendation-box {
+            background: #d5f4e6;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .warning-box {
+            background: #fadbd8;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        
+        .nav-buttons a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        .nav-buttons a:hover {
+            background: #2980b9;
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 5px;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .comparison-visual {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .algorithm-card {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 2px solid #dee2e6;
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+        }
+        
+        .algorithm-card h4 {
+            color: #495057;
+            margin-bottom: 10px;
+        }
+        
+        .complexity-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            margin: 5px;
+        }
+        
+        .complexity-badge.good {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .complexity-badge.medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .complexity-badge.bad {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Аналіз складності алгоритмів сортування</h1>
+        
+        <div class="concept-box">
+            <h2>Що таке складність алгоритму?</h2>
+            <p>Складність алгоритму - це міра того, скільки ресурсів (часу або пам'яті) потрібно алгоритму для виконання залежно від розміру вхідних даних.</p>
+            
+            <h3>Типи складності:</h3>
+            <ul>
+                <li><strong>Часова складність</strong> - скільки часу (операцій) потрібно для виконання</li>
+                <li><strong>Просторова складність</strong> - скільки додаткової пам'яті потрібно</li>
+            </ul>
+        </div>
+        
+        <h2>Big O нотація</h2>
+        
+        <p>Big O описує верхню межу складності алгоритму - найгірший випадок. Це допомагає зрозуміти, як буде зростати час виконання зі збільшенням розміру даних.</p>
+        
+        <div class="big-o-list">
+            <h3>Основні класи складності (від кращого до гіршого):</h3>
+            
+            <div class="big-o-item">
+                <strong>O(1) - Константна складність</strong>
+                <p>Час виконання не залежить від розміру вхідних даних</p>
+                <p>Приклад: доступ до елемента масиву за індексом</p>
+            </div>
+            
+            <div class="big-o-item">
+                <strong>O(log n) - Логарифмічна складність</strong>
+                <p>Час виконання зростає логарифмічно</p>
+                <p>Приклад: бінарний пошук</p>
+            </div>
+            
+            <div class="big-o-item">
+                <strong>O(n) - Лінійна складність</strong>
+                <p>Час виконання прямо пропорційний розміру даних</p>
+                <p>Приклад: пошук елемента в невідсортованому масиві</p>
+            </div>
+            
+            <div class="big-o-item">
+                <strong>O(n log n) - Лінійно-логарифмічна складність</strong>
+                <p>Типова для ефективних алгоритмів сортування</p>
+                <p>Приклад: Merge Sort, Heap Sort</p>
+            </div>
+            
+            <div class="big-o-item">
+                <strong>O(n²) - Квадратична складність</strong>
+                <p>Час виконання пропорційний квадрату розміру даних</p>
+                <p>Приклад: Bubble Sort, Selection Sort</p>
+            </div>
+            
+            <div class="big-o-item">
+                <strong>O(2ⁿ) - Експоненційна складність</strong>
+                <p>Час виконання подвоюється з кожним новим елементом</p>
+                <p>Приклад: розв'язання задачі комівояжера перебором</p>
+            </div>
+        </div>
+        
+        <h2>Порівняння алгоритмів сортування</h2>
+        
+        <h3>Таблиця складності</h3>
+        
+        <table class="complexity-table">
+            <tr>
+                <th>Алгоритм</th>
+                <th>Найкращий випадок</th>
+                <th>Середній випадок</th>
+                <th>Найгірший випадок</th>
+                <th>Пам'ять</th>
+                <th>Стабільний</th>
+                <th>Адаптивний</th>
+            </tr>
+            <tr>
+                <td><strong>Bubble Sort</strong></td>
+                <td><span class="complexity-badge medium">O(n)</span></td>
+                <td><span class="complexity-badge bad">O(n²)</span></td>
+                <td><span class="complexity-badge bad">O(n²)</span></td>
+                <td><span class="complexity-badge good">O(1)</span></td>
+                <td>✓ Так</td>
+                <td>✓ Так</td>
+            </tr>
+            <tr>
+                <td><strong>Selection Sort</strong></td>
+                <td><span class="complexity-badge bad">O(n²)</span></td>
+                <td><span class="complexity-badge bad">O(n²)</span></td>
+                <td><span class="complexity-badge bad">O(n²)</span></td>
+                <td><span class="complexity-badge good">O(1)</span></td>
+                <td>✗ Ні</td>
+                <td>✗ Ні</td>
+            </tr>
+            <tr>
+                <td><strong>Insertion Sort</strong></td>
+                <td><span class="complexity-badge medium">O(n)</span></td>
+                <td><span class="complexity-badge bad">O(n²)</span></td>
+                <td><span class="complexity-badge bad">O(n²)</span></td>
+                <td><span class="complexity-badge good">O(1)</span></td>
+                <td>✓ Так</td>
+                <td>✓ Так</td>
+            </tr>
+            <tr>
+                <td><strong>Merge Sort</strong></td>
+                <td><span class="complexity-badge good">O(n log n)</span></td>
+                <td><span class="complexity-badge good">O(n log n)</span></td>
+                <td><span class="complexity-badge good">O(n log n)</span></td>
+                <td><span class="complexity-badge medium">O(n)</span></td>
+                <td>✓ Так</td>
+                <td>✗ Ні</td>
+            </tr>
+            <tr>
+                <td><strong>Quick Sort</strong></td>
+                <td><span class="complexity-badge good">O(n log n)</span></td>
+                <td><span class="complexity-badge good">O(n log n)</span></td>
+                <td><span class="complexity-badge bad">O(n²)</span></td>
+                <td><span class="complexity-badge good">O(log n)</span></td>
+                <td>✗ Ні</td>
+                <td>✗ Ні</td>
+            </tr>
+            <tr>
+                <td><strong>Heap Sort</strong></td>
+                <td><span class="complexity-badge good">O(n log n)</span></td>
+                <td><span class="complexity-badge good">O(n log n)</span></td>
+                <td><span class="complexity-badge good">O(n log n)</span></td>
+                <td><span class="complexity-badge good">O(1)</span></td>
+                <td>✗ Ні</td>
+                <td>✗ Ні</td>
+            </tr>
+        </table>
+        
+        <h2>Детальний аналіз наших алгоритмів</h2>
+        
+        <h3>1. Bubble Sort</h3>
+        <div class="example">
+            <pre>Кількість порівнянь: (n-1) + (n-2) + ... + 1 = n(n-1)/2
+Часова складність: O(n²)</pre>
+            
+            <p><strong>Найкращий випадок (O(n)):</strong> Масив вже відсортований. З оптимізацією алгоритм зупиняється після першого проходу.</p>
+            
+            <p><strong>Найгірший випадок (O(n²)):</strong> Масив відсортований у зворотному порядку. Потрібно n-1 проходів.</p>
+            
+            <p><strong>Приклад для n=5:</strong> (5-1) + (5-2) + (5-3) + (5-4) = 4 + 3 + 2 + 1 = 10 порівнянь</p>
+        </div>
+        
+        <h3>2. Selection Sort</h3>
+        <div class="example">
+            <pre>Кількість порівнянь: (n-1) + (n-2) + ... + 1 = n(n-1)/2
+Кількість обмінів: максимум n-1
+Часова складність: O(n²)</pre>
+            
+            <p><strong>Особливість:</strong> Складність однакова для всіх випадків, бо алгоритм завжди виконує всі порівняння.</p>
+            
+            <p><strong>Перевага:</strong> Мінімальна кількість обмінів (важливо, якщо обмін - дорога операція).</p>
+        </div>
+        
+        <h3>3. Merge Sort</h3>
+        <div class="example">
+            <pre>Глибина рекурсії: log₂ n
+Робота на кожному рівні: O(n)
+Загальна складність: O(n log n)</pre>
+            
+            <p><strong>Переваги:</strong> Гарантована складність O(n log n) у всіх випадках.</p>
+            
+            <p><strong>Недоліки:</strong> Потребує додаткову пам'ять O(n) для тимчасових масивів.</p>
+            
+            <p><strong>Приклад для n=8:</strong> log₂(8) = 3 рівні рекурсії, на кожному рівні O(8) операцій = 24 операції</p>
+        </div>
+        
+        <h2>Візуальне порівняння</h2>
+        
+        <div class="graph-container">
+            <h3>Графік росту складності</h3>
+            <div class="graph">Час виконання
+    |
+n²  |                    ....''''
+    |                ..''    
+    |            ..''        Selection/Bubble
+    |        ..''            
+n log n |    .'''''''''''''  Merge Sort
+    | ..'''''
+n   |.'                      Linear (для порівняння)
+    |________________________
+    10   100   1000   10000  Розмір масиву</div>
+        </div>
+        
+        <h3>Практичні приклади часу виконання</h3>
+        
+        <p>Для масиву з різною кількістю елементів на типовому комп'ютері:</p>
+        
+        <table class="complexity-table">
+            <tr>
+                <th>Розмір масиву</th>
+                <th>Bubble Sort</th>
+                <th>Selection Sort</th>
+                <th>Merge Sort</th>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>< 0.001 с</td>
+                <td>< 0.001 с</td>
+                <td>< 0.001 с</td>
+            </tr>
+            <tr>
+                <td>100</td>
+                <td>~0.01 с</td>
+                <td>~0.005 с</td>
+                <td>~0.001 с</td>
+            </tr>
+            <tr>
+                <td>1,000</td>
+                <td>~0.1 с</td>
+                <td>~0.05 с</td>
+                <td>~0.01 с</td>
+            </tr>
+            <tr>
+                <td>10,000</td>
+                <td>~10 с</td>
+                <td>~5 с</td>
+                <td>~0.1 с</td>
+            </tr>
+            <tr>
+                <td>100,000</td>
+                <td>~1000 с (17 хв)</td>
+                <td>~500 с (8 хв)</td>
+                <td>~1 с</td>
+            </tr>
+        </table>
+        
+        <h2>Як вибрати алгоритм?</h2>
+        
+        <div class="recommendation-box">
+            <h3>✅ Рекомендації за розміром даних:</h3>
+            <ul>
+                <li><strong>&lt; 10 елементів:</strong> Будь-який алгоритм (навіть Bubble Sort)</li>
+                <li><strong>10-50 елементів:</strong> Insertion Sort (швидкий на малих масивах)</li>
+                <li><strong>50-1000 елементів:</strong> Merge Sort або Quick Sort</li>
+                <li><strong>&gt; 1000 елементів:</strong> Обов'язково O(n log n) алгоритми</li>
+            </ul>
+        </div>
+        
+        <div class="recommendation-box">
+            <h3>✅ Рекомендації за типом даних:</h3>
+            <ul>
+                <li><strong>Майже відсортовані:</strong> Insertion Sort або Bubble Sort з оптимізацією</li>
+                <li><strong>Випадкові:</strong> Quick Sort або Merge Sort</li>
+                <li><strong>Багато однакових елементів:</strong> Merge Sort (стабільний)</li>
+                <li><strong>Обмежена пам'ять:</strong> Heap Sort або Quick Sort</li>
+                <li><strong>Потрібна стабільність:</strong> Merge Sort або Bubble Sort</li>
+            </ul>
+        </div>
+        
+        <h2>Стабільність алгоритмів</h2>
+        
+        <div class="concept-box">
+            <p><strong>Стабільний алгоритм</strong> зберігає відносний порядок елементів з однаковими ключами.</p>
+            
+            <h3>Приклад:</h3>
+            <pre>Початковий масив: [(2, 'a'), (1, 'b'), (2, 'c')]
+                    ↑ ключ   ↑ значення
+
+Після стабільного сортування: [(1, 'b'), (2, 'a'), (2, 'c')]
+                                           ↑ порядок 'a' і 'c' збережено
+
+Після нестабільного: [(1, 'b'), (2, 'c'), (2, 'a')]
+                                  ↑ порядок змінено</pre>
+            
+            <p><strong>Навіщо це важливо?</strong> При сортуванні за кількома критеріями (спочатку за прізвищем, потім за ім'ям).</p>
+        </div>
+        
+        <h2>Адаптивність</h2>
+        
+        <div class="concept-box">
+            <p><strong>Адаптивний алгоритм</strong> працює швидше на частково відсортованих даних.</p>
+            
+            <div class="comparison-visual">
+                <div class="algorithm-card">
+                    <h4>Адаптивні</h4>
+                    <p>Bubble Sort</p>
+                    <p>Insertion Sort</p>
+                    <p style="color: green;">✓ Використовують вже відсортовані частини</p>
+                </div>
+                
+                <div class="algorithm-card">
+                    <h4>Неадаптивні</h4>
+                    <p>Selection Sort</p>
+                    <p>Merge Sort</p>
+                    <p>Heap Sort</p>
+                    <p style="color: red;">✗ Завжди виконують всю роботу</p>
+                </div>
+            </div>
+        </div>
+        
+        <h2>Практичні поради</h2>
+        
+        <div class="recommendation-box">
+            <ol>
+                <li><strong>Для навчання:</strong> почніть з Bubble Sort - найпростіший для розуміння</li>
+                <li><strong>Для малих масивів (&lt; 50):</strong> Insertion Sort часто найшвидший</li>
+                <li><strong>Для загального використання:</strong> Quick Sort або Merge Sort</li>
+                <li><strong>Для гарантованої швидкості:</strong> Merge Sort (завжди O(n log n))</li>
+                <li><strong>Коли важлива стабільність:</strong> Merge Sort або Insertion Sort</li>
+                <li><strong>Коли обмежена пам'ять:</strong> Quick Sort або Heap Sort</li>
+            </ol>
+        </div>
+        
+        <div class="warning-box">
+            <h3>⚠️ Типові помилки:</h3>
+            <ul>
+                <li>Використання O(n²) алгоритмів для великих масивів</li>
+                <li>Ігнорування вже відсортованих даних (не використання адаптивних алгоритмів)</li>
+                <li>Вибір нестабільного алгоритму, коли важливий порядок</li>
+                <li>Надмірна оптимізація для малих масивів</li>
+            </ul>
+        </div>
+        
+        <h2>Висновок</h2>
+        
+        <p>Не існує "найкращого" алгоритму сортування для всіх випадків. Вибір залежить від:</p>
+        <ul>
+            <li>Розміру даних</li>
+            <li>Характеру даних (випадкові, частково відсортовані)</li>
+            <li>Обмежень пам'яті</li>
+            <li>Потреби в стабільності</li>
+            <li>Простоти реалізації</li>
+        </ul>
+        
+        <p>Розуміння складності алгоритмів допоможе вам приймати правильні рішення при виборі алгоритму для конкретної задачі.</p>
+        
+        <div class="nav-buttons">
+            <a href="merge-sort.html">← Merge Sort</a>
+            <a href="../index.html">На головну</a>
+        </div>
+    </div>
+</body>
+</html>
