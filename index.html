@@ -1422,7 +1422,56 @@ def my_sort(arr):
             document.getElementById('quiz-questions').innerHTML = results;
             document.getElementById('quiz-navigation').style.display = 'none';
         }
-        
+        function startMysterySort() {
+            const array = [5, 3, 8, 4, 2];
+            const container = document.getElementById('mystery-array');
+             container.innerHTML = '';
+              
+             const bars = array.map(value => {
+               const bar = document.createElement('div');
+               bar.textContent = value;
+               bar.style.width = '40px';
+               bar.style.height = `${value * 20}px`;
+               bar.style.backgroundColor = '#3498db';
+               bar.style.display = 'inline-block';
+               bar.style.color = 'white';
+               bar.style.textAlign = 'center';
+               bar.style.verticalAlign = 'bottom';
+               container.appendChild(bar);
+               return bar;
+             });
+            
+             let i = 0, j = 0;
+            
+             function animateStep() {
+               if (i < array.length) {
+                 if (j < array.length - i - 1) {
+                   bars[j].style.backgroundColor = 'red';
+                   bars[j + 1].style.backgroundColor = 'red';
+                   setTimeout(() => {
+                     if (array[j] > array[j + 1]) {
+                        // Swap values
+                       [array[j], array[j + 1]] = [array[j + 1], array[j]];
+                       bars[j].textContent = array[j];
+                       bars[j + 1].textContent = array[j + 1];
+                       bars[j].style.height = `${array[j] * 20}px`;
+                       bars[j + 1].style.height = `${array[j + 1] * 20}px`;
+                     }
+                     bars[j].style.backgroundColor = '#3498db';
+                     bars[j + 1].style.backgroundColor = '#3498db';
+                     j++;
+                     animateStep();
+                   }, 400);
+                 } else {
+                   j = 0;
+                   i++;
+                   animateStep();
+                 }
+               }
+             }
+            
+             animateStep();
+            }
         // True/False швидкий тест
         const tfAnswers = {1: false, 2: true, 3: false};
         let tfScore = 0;
