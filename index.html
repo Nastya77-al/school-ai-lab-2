@@ -880,7 +880,92 @@ def my_sort(arr):
                 sortingInProgress = false;
             }
         }
+        async function mergeSortVisualization() {
+            const values = getArrayValues();
+            const bars = document.querySelectorAll('.bar');
         
+            async function merge(start, mid, end) {
+                const left = values.slice(start, mid + 1);
+                const right = values.slice(mid + 1, end + 1);
+        
+                let i = 0, j = 0, k = start;
+        
+                while (i < left.length && j < right.length && sortingInProgress) {
+                    while (isPaused && sortingInProgress) {
+                        await sleep(100);
+                    }
+        
+                    bars[k].classList.add('comparing');
+                    comparisons++;
+                    updateStats();
+                    await sleep(currentSpeed);
+        
+                    if (left[i] <= right[j]) {
+                        values[k] = left[i];
+                        i++;
+                    } else {
+                        values[k] = right[j];
+                        j++;
+                        swaps++; // Перестановка з правої частини
+                    }
+        
+                    updateBars(values);
+                    updateStats();
+                    bars[k].classList.remove('comparing');
+                    k++;
+                }
+        
+                while (i < left.length && sortingInProgress) {
+                    while (isPaused && sortingInProgress) {
+                        await sleep(100);
+                    }
+        
+                    values[k] = left[i];
+                    updateBars(values);
+                    i++;
+                    k++;
+                    swaps++;
+                    updateStats();
+                    await sleep(currentSpeed);
+                }
+        
+                while (j < right.length && sortingInProgress) {
+                    while (isPaused && sortingInProgress) {
+                        await sleep(100);
+                    }
+        
+                    values[k] = right[j];
+                    updateBars(values);
+                    j++;
+                    k++;
+                    swaps++;
+                    updateStats();
+                    await sleep(currentSpeed);
+                }
+        
+                for (let idx = start; idx <= end; idx++) {
+                    bars[idx].classList.add('sorted');
+                }
+            }
+
+    async function mergeSort(start, end) {
+        if (start >= end || !sortingInProgress) return;
+
+        const mid = Math.floor((start + end) / 2);
+        await mergeSort(start, mid);
+        await mergeSort(mid + 1, end);
+        await merge(start, mid, end);
+    }
+
+    await mergeSort(0, values.length - 1);
+
+    if (sortingInProgress) {
+        document.getElementById('status').textContent = 'Сортування завершено!';
+        sortingInProgress = false;
+    }
+}
+
+
         function startVisualization(algorithm) {
             if (sortingInProgress) return;
             
@@ -899,8 +984,7 @@ def my_sort(arr):
                     selectionSortVisualization();
                     break;
                 case 'merge':
-                    document.getElementById('status').textContent = 'Merge Sort - демонстрація в розробці';
-                    sortingInProgress = false;
+                    mergeSortVisualization();
                     break;
             }
         }
