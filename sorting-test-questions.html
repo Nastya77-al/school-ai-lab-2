@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест - Алгоритми сортування</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+        
+        .question {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .question h3 {
+            color: #34495e;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .options {
+            margin-left: 20px;
+        }
+        
+        .option {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option input[type="radio"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .option label {
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        .submit-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 30px;
+            cursor: pointer;
+            display: block;
+            margin: 40px auto 20px;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .result {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        
+        .result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .result.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .result.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        
+        .score {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #e8f4f8;
+            border-radius: 5px;
+            border-left: 3px solid #17a2b8;
+        }
+        
+        .correct-answer {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .wrong-answer {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        .timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #34495e;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1.2em;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .timer {
+                position: static;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="timer" id="timer">Час: <span id="time">10:00</span></div>
+    
+    <div class="container">
+        <h1>Тест: Алгоритми сортування</h1>
+        
+        <form id="testForm">
+            <!-- Питання 1 -->
+            <div class="question">
+                <h3>1. Яка часова складність алгоритму Bubble Sort у найгіршому випадку?</h3>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q1a" name="q1" value="a">
+                        <label for="q1a">O(n)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q1b" name="q1" value="b">
+                        <label for="q1b">O(n log n)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q1c" name="q1" value="c">
+                        <label for="q1c">O(n²)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q1d" name="q1" value="d">
+                        <label for="q1d">O(log n)</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Питання 2 -->
+            <div class="question">
+                <h3>2. Який алгоритм використовує принцип "розділяй і володарюй"?</h3>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q2a" name="q2" value="a">
+                        <label for="q2a">Bubble Sort</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q2b" name="q2" value="b">
+                        <label for="q2b">Selection Sort</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q2c" name="q2" value="c">
+                        <label for="q2c">Merge Sort</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q2d" name="q2" value="d">
+                        <label for="q2d">Insertion Sort</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Питання 3 -->
+            <div class="question">
+                <h3>3. Скільки порівнянь виконає Selection Sort для масиву з 5 елементів?</h3>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q3a" name="q3" value="a">
+                        <label for="q3a">5</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q3b" name="q3" value="b">
+                        <label for="q3b">10</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q3c" name="q3" value="c">
+                        <label for="q3c">15</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q3d" name="q3" value="d">
+                        <label for="q3d">25</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Питання 4 -->
+            <div class="question">
+                <h3>4. Який алгоритм є стабільним?</h3>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q4a" name="q4" value="a">
+                        <label for="q4a">Selection Sort</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q4b" name="q4" value="b">
+                        <label for="q4b">Merge Sort</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q4c" name="q4" value="c">
+                        <label for="q4c">Heap Sort</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q4d" name="q4" value="d">
+                        <label for="q4d">Quick Sort</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Питання 5 -->
+            <div class="question">
+                <h3>5. Що відбудеться після першого проходу Bubble Sort?</h3>
+                <div class="code-block">
+                    arr = [5, 2, 8, 1, 9]
+                </div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q5a" name="q5" value="a">
+                        <label for="q5a">[2, 5, 1, 8, 9]</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q5b" name="q5" value="b">
+                        <label for="q5b">[1, 2, 5, 8, 9]</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q5c" name="q5" value="c">
+                        <label for="q5c">[2, 5, 8, 9, 1]</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q5d" name="q5" value="d">
+                        <label for="q5d">[2, 5, 1, 8, 9]</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Питання 6 -->
+            <div class="question">
+                <h3>6. Яка просторова складність Merge Sort?</h3>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q6a" name="q6" value="a">
+                        <label for="q6a">O(1)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q6b" name="q6" value="b">
+                        <label for="q6b">O(log n)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q6c" name="q6" value="c">
+                        <label for="q6c">O(n)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q6d" name="q6" value="d">
+                        <label for="q6d">O(n²)</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Питання 7 -->
+            <div class="question">
+                <h3>7. Який алгоритм виконує мінімальну кількість обмінів?</h3>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q7a" name="q7" value="a">
+                        <label for="q7a">Bubble Sort</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q7b" name="q7" value="b">
+                        <label for="q7b">Selection Sort</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q7c" name="q7" value="c">
+                        <label for="q7c">Insertion Sort</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q7d" name="q7" value="d">
+                        <label for="q7d">Merge Sort</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Питання 8 -->
+            <div class="question">
+                <h3>8. Для якого типу даних Bubble Sort працює найшвидше?</h3>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q8a" name="q8" value="a">
+                        <label for="q8a">Випадковий масив</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q8b" name="q8" value="b">
+                        <label for="q8b">Відсортований масив</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q8c" name="q8" value="c">
+                        <label for="q8c">Зворотно відсортований масив</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q8d" name="q8" value="d">
+                        <label for="q8d">Масив з однаковими елементами</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Питання 9 -->
+            <div class="question">
+                <h3>9. Яка основна перевага Merge Sort над Bubble Sort?</h3>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q9a" name="q9" value="a">
+                        <label for="q9a">Використовує менше пам'яті</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q9b" name="q9" value="b">
+                        <label for="q9b">Простіший для реалізації</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q9c" name="q9" value="c">
+                        <label for="q9c">Гарантована швидкість O(n log n)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q9d" name="q9" value="d">
+                        <label for="q9d">Працює на місці</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Питання 10 -->
+            <div class="question">
+                <h3>10. Який з алгоритмів НЕ є адаптивним?</h3>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q10a" name="q10" value="a">
+                        <label for="q10a">Bubble Sort (оптимізований)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q10b" name="q10" value="b">
+                        <label for="q10b">Insertion Sort</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q10c" name="q10" value="c">
+                        <label for="q10c">Selection Sort</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q10d" name="q10" value="d">
+                        <label for="q10d">Shell Sort</label>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn">Перевірити результати</button>
+        </form>
+        
+        <div id="result" class="result"></div>
+        
+        <div id="explanations" style="display: none;">
+            <h2 style="margin-top: 40px; color: #34495e;">Пояснення відповідей:</h2>
+            
+            <div class="explanation" id="exp1">
+                <strong>Питання 1:</strong> Bubble Sort має складність O(n²), оскільки використовує два вкладені цикли.
+            </div>
+            
+            <div class="explanation" id="exp2">
+                <strong>Питання 2:</strong> Merge Sort використовує принцип "розділяй і володарюй", розбиваючи масив на менші частини.
+            </div>
+            
+            <div class="explanation" id="exp3">
+                <strong>Питання 3:</strong> Selection Sort виконує (n-1)+(n-2)+...+1 = n(n-1)/2 порівнянь. Для n=5: 4+3+2+1=10.
+            </div>
+            
+            <div class="explanation" id="exp4">
+                <strong>Питання 4:</strong> Merge Sort є стабільним - зберігає порядок однакових елементів.
+            </div>
+            
+            <div class="explanation" id="exp5">
+                <strong>Питання 5:</strong> Після першого проходу найбільший елемент (9) опиниться в кінці: [2, 5, 1, 8, 9].
+            </div>
+            
+            <div class="explanation" id="exp6">
+                <strong>Питання 6:</strong> Merge Sort потребує O(n) додаткової пам'яті для тимчасових масивів.
+            </div>
+            
+            <div class="explanation" id="exp7">
+                <strong>Питання 7:</strong> Selection Sort виконує максимум n-1 обмінів (по одному на кожну ітерацію).
+            </div>
+            
+            <div class="explanation" id="exp8">
+                <strong>Питання 8:</strong> Оптимізований Bubble Sort працює за O(n) на вже відсортованому масиві.
+            </div>
+            
+            <div class="explanation" id="exp9">
+                <strong>Питання 9:</strong> Merge Sort завжди працює за O(n log n), на відміну від O(n²) у Bubble Sort.
+            </div>
+            
+            <div class="explanation" id="exp10">
+                <strong>Питання 10:</strong> Selection Sort не адаптивний - завжди виконує однакову кількість операцій.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Правильні відповіді
+        const correctAnswers = {
+            q1: 'c',
+            q2: 'c',
+            q3: 'b',
+            q4: 'b',
+            q5: 'a',
+            q6: 'c',
+            q7: 'b',
+            q8: 'b',
+            q9: 'c',
+            q10: 'c'
+        };
+        
+        // Таймер
+        let timeLeft = 600; // 10 хвилин
+        const timerElement = document.getElementById('time');
+        
+        const timer = setInterval(() => {
+            timeLeft--;
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                checkAnswers();
+            }
+        }, 1000);
+        
+        // Перевірка відповідей
+        document.getElementById('testForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            clearInterval(timer);
+            checkAnswers();
+        });
+        
+        function checkAnswers() {
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            // Перевіряємо кожне питання
+            for (let question in correctAnswers) {
+                const userAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                const correctAnswer = correctAnswers[question];
+                
+                if (userAnswer && userAnswer.value === correctAnswer) {
+                    score++;
+                    // Підсвічуємо правильну відповідь
+                    userAnswer.parentElement.style.color = '#28a745';
+                } else {
+                    // Показуємо правильну відповідь
+                    if (userAnswer) {
+                        userAnswer.parentElement.style.color = '#dc3545';
+                    }
+                    const correctOption = document.querySelector(`input[name="${question}"][value="${correctAnswer}"]`);
+                    if (correctOption) {
+                        correctOption.parentElement.style.color = '#28a745';
+                        correctOption.parentElement.style.fontWeight = 'bold';
+                    }
+                }
+            }
+            
+            // Показуємо результат
+            const resultDiv = document.getElementById('result');
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            let resultClass = 'error';
+            let resultText = 'Потрібно більше практики!';
+            
+            if (percentage >= 80) {
+                resultClass = 'success';
+                resultText = 'Відмінно! Ви добре засвоїли матеріал!';
+            } else if (percentage >= 60) {
+                resultClass = 'warning';
+                resultText = 'Добре, але є що покращити!';
+            }
+            
+            resultDiv.className = `result ${resultClass}`;
+            resultDiv.innerHTML = `
+                <h2>${resultText}</h2>
+                <div class="score">${score} / ${totalQuestions}</div>
+                <p>Ваш результат: ${percentage}%</p>
+            `;
+            resultDiv.style.display = 'block';
+            
+            // Показуємо пояснення
+            document.getElementById('explanations').style.display = 'block';
+            document.querySelectorAll('.explanation').forEach(exp => {
+                exp.style.display = 'block';
+            });
+            
+            // Вимикаємо форму
+            document.querySelectorAll('input[type="radio"]').forEach(input => {
+                input.disabled = true;
+            });
+            document.querySelector('.submit-btn').disabled = true;
+            
+            // Прокручуємо до результатів
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
