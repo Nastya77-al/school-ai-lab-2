@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Алгоритми сортування - Навчальний курс</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        /* Анімований фон */
+        .background-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        .floating-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating-element:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            left: 70%;
+            animation-delay: 3s;
+        }
+        
+        .floating-element:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            left: 40%;
+            animation-delay: 6s;
+        }
+        
+        .floating-element:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            left: 85%;
+            animation-delay: 9s;
+        }
+        
+        .floating-element:nth-child(5) {
+            width: 90px;
+            height: 90px;
+            left: 25%;
+            animation-delay: 12s;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Основний контейнер */
+        .title-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 60px;
+            max-width: 800px;
+            width: 90%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: slideIn 1s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Декоративні елементи */
+        .corner-decoration {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            opacity: 0.1;
+        }
+        
+        .corner-decoration.top-left {
+            top: -75px;
+            left: -75px;
+            border-radius: 50%;
+            transform: rotate(45deg);
+        }
+        
+        .corner-decoration.bottom-right {
+            bottom: -75px;
+            right: -75px;
+            border-radius: 50%;
+            transform: rotate(45deg);
+        }
+        
+        /* Заголовки */
+        h1 {
+            font-size: 3.5em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: fadeInDown 1s ease-out 0.3s both;
+        }
+        
+        h2 {
+            font-size: 2em;
+            color: #34495e;
+            margin-bottom: 30px;
+            font-weight: 400;
+            animation: fadeInDown 1s ease-out 0.5s both;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Іконка */
+        .main-icon {
+            font-size: 5em;
+            margin: 30px 0;
+            color: #667eea;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+        
+        /* Інформаційні блоки */
+        .info-section {
+            margin: 40px 0;
+            animation: fadeIn 1s ease-out 0.7s both;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin: 15px auto;
+            max-width: 600px;
+            font-size: 1.2em;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .info-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* Автор */
+        .author-section {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+            animation: fadeIn 1s ease-out 0.9s both;
+        }
+        
+        .author-placeholder {
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 400px;
+            font-size: 1.1em;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+        }
+        
+        .author-placeholder:hover {
+            background: #f0f3ff;
+            border-color: #764ba2;
+        }
+        
+        .author-label {
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 5px;
+        }
+        
+        /* Кнопка початку */
+        .start-button {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 20px 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            font-size: 1.3em;
+            font-weight: 600;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease-out 1.1s both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .start-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #764ba2, #667eea);
+        }
+        
+        /* Адаптивність */
+        @media (max-width: 768px) {
+            .title-container {
+                padding: 40px 30px;
+            }
+            
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+            
+            .main-icon {
+                font-size: 4em;
+            }
+            
+            .info-box {
+                font-size: 1.1em;
+                padding: 15px 20px;
+            }
+        }
+        
+        /* Візуальні елементи сортування */
+        .sorting-visual {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px 0;
+            animation: fadeIn 1s ease-out 0.8s both;
+        }
+        
+        .bar {
+            width: 40px;
+            background: linear-gradient(to top, #667eea, #764ba2);
+            border-radius: 5px 5px 0 0;
+            transition: all 0.3s ease;
+            opacity: 0.8;
+        }
+        
+        .bar:nth-child(1) { height: 60px; animation: barGrow 1s ease-out 1s both; }
+        .bar:nth-child(2) { height: 100px; animation: barGrow 1s ease-out 1.1s both; }
+        .bar:nth-child(3) { height: 40px; animation: barGrow 1s ease-out 1.2s both; }
+        .bar:nth-child(4) { height: 80px; animation: barGrow 1s ease-out 1.3s both; }
+        .bar:nth-child(5) { height: 120px; animation: barGrow 1s ease-out 1.4s both; }
+        
+        @keyframes barGrow {
+            from {
+                transform: scaleY(0);
+                opacity: 0;
+            }
+            to {
+                transform: scaleY(1);
+                opacity: 0.8;
+            }
+        }
+        
+        .bar:hover {
+            opacity: 1;
+            transform: scaleY(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animation">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+    
+    <div class="title-container">
+        <div class="corner-decoration top-left"></div>
+        <div class="corner-decoration bottom-right"></div>
+        
+        <h1>Алгоритми сортування</h1>
+        <h2>Інтерактивний навчальний курс</h2>
+        
+        <div class="main-icon">📊</div>
+        
+        <div class="sorting-visual">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        
+        <div class="info-section">
+            <div class="info-box">
+                <strong>Тема курсу:</strong> Вивчення та візуалізація основних алгоритмів сортування
+            </div>
+            
+            <div class="info-box">
+                <strong>Цільова аудиторія:</strong> Учні 10-11 класів з поглибленим вивченням інформатики
+            </div>
+            
+            <div class="info-box">
+                <strong>Тривалість:</strong> 90 хвилин (2 академічні години)
+            </div>
+        </div>
+        
+        <div class="author-section">
+            <div class="author-label">Автор курсу:</div>
+            <div class="author-placeholder">
+                [Римша Анастасія]<br>
+                [КДПУ]<br>
+                [МІм-24]
+            </div>
+        </div>
+        
+        <a href="index.html" class="start-button">
+            Розпочати навчання →
+        </a>
+    </div>
+</body>
+</html>
